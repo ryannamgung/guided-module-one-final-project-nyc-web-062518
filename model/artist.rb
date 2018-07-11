@@ -10,4 +10,8 @@ class Artist < ActiveRecord::Base
     Artist.delete_all
   end
 
+  def self.most_popular
+    Artist.maximum(num_of_fans)
+  end
+
 end
