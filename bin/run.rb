@@ -3,7 +3,10 @@ require "pry"
 
 
   def gets_user_input
-    gets.chomp.downcase
+    array_names = gets.chomp.split(" ").map do |name|
+      name.downcase.capitalize
+    end
+    array_names.join(" ")
   end
 
   def find_by_name(artist)
@@ -21,14 +24,15 @@ require "pry"
 
   def find_songs(album, artist_name)
     albums = []
-    input = album.capitalize
+    input = album
     url = 'https://api.deezer.com/search/album?q='+input
     response = RestClient.get(url)
     stringy_json = response.body
     result = JSON.parse(stringy_json)
+
     new_url = ''
     result["data"].find {|info_hash|
-      if info_hash["artist"]["name"] == artist_name.capitalize
+      if info_hash["artist"]["name"] == artist_name
         new_url = info_hash["tracklist"]
       end
     }
@@ -42,35 +46,81 @@ require "pry"
       songs << info_hash["title"]
     end
     songs
-    # binding.pry
   end
 
   def find_album_id(album, artist_name)
     albums = []
-    input = album.capitalize
+    input = album
     url = 'https://api.deezer.com/search/album?q='+input
     response = RestClient.get(url)
     stringy_json = response.body
     result = JSON.parse(stringy_json)
+
     album_id = ''
     result["data"].find {|info_hash|
-      if info_hash["artist"]["name"] == artist_name.capitalize
+      if info_hash["artist"]["name"] == artist_name
         album_id = info_hash["id"]
       end
     }
     album_id
   end
 
+  def find_num_fans(artist)
+    fans = nil
+    input = artist
+    url = 'https://api.deezer.com/artist/'+input
+    response = RestClient.get(url)
+    stringy_json = response.body
+    result = JSON.parse(stringy_json)
+    result.each do |key, value|
+      if key == "nb_fan"
+        fans = value
+      end
+    end
+    fans
+  end
 
+  def find_num_albums(artist)
+    albums = nil
+    input = artist
+    url = 'https://api.deezer.com/artist/'+input
+    response = RestClient.get(url)
+    stringy_json = response.body
+    result = JSON.parse(stringy_json)
+    result.each do |key, value|
+      if key == "nb_album"
+        albums = value
+      end
+    end
+    albums
+  end
 
-
-  puts "Enter Artist Name:"
+  #
+  #
+  puts "Enter an Artist name: "
   artist = gets_user_input
-  Artist.create_artist(artist)
-  album_array = find_by_name(artist)
-
-  puts "Enter the full artist name:"
-  artist_name = gets_user_input
-  song_array = find_songs(album_array[0], artist_name)
-  album_id = find_album_id(album_array[0], artist_name)
-  p Song.create_song(song_array[0], album_id)
+  fan_count = find_num_fans(artist)
+  album_count = find_num_albums(artist)
+  if !Artist.exists?(name: artist)
+    artist_instance = Artist.create_artist(artist, album_count, fan_count)
+  else
+    artist_instance = Artist.find_by(name: artist)
+  end
+  
+  #   album_array = find_by_name(artist)
+  #   random_album = album_array.sample
+  #   song_array = find_songs(random_album, artist)
+  #   # binding.pry
+  #   album_id = find_album_id(random_album, artist)
+  #
+  # song_array.each do |song|
+  #   if !Song.exists?(name: song)
+  #    song_instance = Song.create_song(song, album_id)
+  #    Album.create_album(artist_instance.id, song_instance.id, random_album, song_instance.deezer_album_id)
+  #  end
+  # end
+  # # # binding.pry
+  # p Album.all
+  # Album.delete
+  # Song.delete
+  # Artist.delete

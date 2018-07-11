@@ -6,8 +6,8 @@ class Song < ActiveRecord::Base
     Song.create(name: name, deezer_album_id: album_id)
   end
 
-  def self.get_first_artist
-    artists.first
-  end
+def self.delete
+  Song.delete_all
+end
 
 end
