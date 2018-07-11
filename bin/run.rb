@@ -1,4 +1,5 @@
 require_relative '../config/environment'
+require "pry"
 
 def welcome
   puts "Hello, welcome to the Music Database."
@@ -8,9 +9,25 @@ def gets_user_input
   gets.chomp.downcase
 end
 
+def find_by_name(artist)
+  # Artist.find, and if not, then make the call to the API
+  input = artist
+  url = 'https://api.deezer.com/search/album?q='+input
+  response = RestClient.get(url)
+  stringy_json = response.body
+  result = JSON.parse(stringy_json)
+  array = []
+  result["data"].each do |info_hash|
+    array << info_hash["title"]
+  end
+  array = array.uniq
+  array
+end
+
 puts "enter a artist name"
-input = gets_user_input
-p find_by_name(input)
+artist = gets_user_input
+
+p find_by_name(artist)
 
 # welcome
 # puts "Please enter a group (a,b,c,d,e,f): "

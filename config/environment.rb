@@ -1,5 +1,5 @@
 require 'bundler'
-require 'rest-client'
+require "rest-client"
 require 'json'
 Bundler.require
 

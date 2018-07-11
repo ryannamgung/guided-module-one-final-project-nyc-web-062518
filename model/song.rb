@@ -1,4 +1,4 @@
 class Song < ActiveRecord::Base
   belongs_to :album
-  belongs_to :artist, through: :album
+  has_many :artist, through: :album
 end
