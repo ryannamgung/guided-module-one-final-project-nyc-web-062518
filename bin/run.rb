@@ -43,10 +43,32 @@ require "pry"
       songs << info_hash["title"]
     end
     songs
-    binding.pry
+    # binding.pry
   end
+
+  def find_album_id(album, artist_name)
+    albums = []
+    input = album.capitalize
+    url = 'https://api.deezer.com/search/album?q='+input
+    response = RestClient.get(url)
+    stringy_json = response.body
+    result = JSON.parse(stringy_json)
+    new_url = ''
+    result["data"].find {|info_hash|
+      if info_hash["artist"]["name"] == artist_name.capitalize
+        album_id = info_hash["id"]
+      end
+    }
+    new_url
+  end
+
+
+
+
 
   artist = gets_user_input
   Artist.create_artist(artist)
   album_array = find_by_name(artist)
-  find_songs(album_array[0], artist)
+  song_array = find_songs(album_array[0], artist)
+  album_id = find_album_id(album_array[0], artist)
+  p Song.create_song(song_array[0], album_id)
