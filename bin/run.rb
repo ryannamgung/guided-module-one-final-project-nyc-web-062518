@@ -53,13 +53,13 @@ require "pry"
     response = RestClient.get(url)
     stringy_json = response.body
     result = JSON.parse(stringy_json)
-    new_url = ''
+    album_id = ''
     result["data"].find {|info_hash|
       if info_hash["artist"]["name"] == artist_name.capitalize
         album_id = info_hash["id"]
       end
     }
-    new_url
+    album_id
   end
 
 
