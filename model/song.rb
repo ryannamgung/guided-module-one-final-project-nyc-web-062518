@@ -5,4 +5,9 @@ class Song < ActiveRecord::Base
   def self.create_song(name, album_id)
     Song.create(name: name, deezer_album_id: album_id)
   end
+
+def self.delete
+  Song.delete_all
+end
+
 end
