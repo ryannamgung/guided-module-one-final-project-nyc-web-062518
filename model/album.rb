@@ -3,7 +3,7 @@ class Album < ActiveRecord::Base
   belongs_to :artist
 
 
-  def create_album
-    Album.create()
+  def self.create_album(input)
+    Album.new(name: input)
   end
 end
