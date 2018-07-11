@@ -66,25 +66,29 @@ require "pry"
   end
 
 
-
-
+  #
+  #
   puts "Enter an Artist name: "
   artist = gets_user_input
-  artist_instance = Artist.create_artist(artist)
-  album_array = find_by_name(artist)
-  puts "Enter an Artist name: "
-  artist_name = gets_user_input
-  song_array = find_songs(album_array[0], artist_name)
-  album_id = find_album_id(album_array[0], artist_name)
-  binding.pry
-  song_array.each do |song|
-    binding.pry
-     song_instance = Song.create_song(song, album_id)
-     Album.create_album(artist_instance.id, song_instance.id, album_array[0], song_instance.deezer_album_id)
+  if !Artist.exists?(name: artist)
+    artist_instance = Artist.create_artist(artist)
+  else
+    artist_instance = Artist.find_by(name: artist)
   end
+    album_array = find_by_name(artist)
+    random_album = album_array.sample
+    song_array = find_songs(random_album, artist)
+    # binding.pry
+    album_id = find_album_id(random_album, artist)
 
+  song_array.each do |song|
+    if !Song.exists?(name: song)
+     song_instance = Song.create_song(song, album_id)
+     Album.create_album(artist_instance.id, song_instance.id, random_album, song_instance.deezer_album_id)
+   end
+  end
+  # # binding.pry
+  p Album.all
+  # Album.delete
   # Song.delete
   # Artist.delete
-  # Album.delete
-
-  p Album.all
