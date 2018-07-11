@@ -3,7 +3,6 @@ require "pry"
 
 
   def gets_user_input
-    puts "Enter Artist Name:"
     gets.chomp.downcase
   end
 
@@ -53,22 +52,25 @@ require "pry"
     response = RestClient.get(url)
     stringy_json = response.body
     result = JSON.parse(stringy_json)
-    new_url = ''
+    album_id = ''
     result["data"].find {|info_hash|
       if info_hash["artist"]["name"] == artist_name.capitalize
         album_id = info_hash["id"]
       end
     }
-    new_url
+    album_id
   end
 
 
 
 
-
+  puts "Enter Artist Name:"
   artist = gets_user_input
   Artist.create_artist(artist)
   album_array = find_by_name(artist)
-  song_array = find_songs(album_array[0], artist)
-  album_id = find_album_id(album_array[0], artist)
+
+  puts "Enter the full artist name:"
+  artist_name = gets_user_input
+  song_array = find_songs(album_array[0], artist_name)
+  album_id = find_album_id(album_array[0], artist_name)
   p Song.create_song(song_array[0], album_id)

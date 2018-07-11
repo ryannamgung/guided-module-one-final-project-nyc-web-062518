@@ -5,4 +5,9 @@ class Song < ActiveRecord::Base
   def self.create_song(name, album_id)
     Song.create(name: name, deezer_album_id: album_id)
   end
+
+  def self.get_first_artist
+    artists.first
+  end
+
 end
