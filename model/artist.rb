@@ -22,25 +22,11 @@ class Artist < ActiveRecord::Base
     artist.name
   end
 
-  def self.all_albums(artist)
-    artist = Method.input(artist)
-    artist_id = Playlist.get_artist_id(artist)
-    # binding.pry
-    album_deezer_id = Album.all.map do |album|
-      if album.artist_id == artist_id
-        album.deezer_id
-      end
+  def self.all_artists
+    Artist.all.map do |artist|
+      artist.name
     end
-    deezer_ids = album_deezer_id.uniq.compact
-    song_array = []
-    Song.all.each do |song|
-      deezer_ids.each do |id|
-        if song.deezer_album_id == id
-          song_array << song.name
-        end
-      end
-    end
-     song_array
   end
+
 
 end
