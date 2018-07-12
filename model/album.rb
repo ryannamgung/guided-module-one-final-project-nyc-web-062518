@@ -10,4 +10,6 @@ class Album < ActiveRecord::Base
   def self.delete
     Album.delete_all
   end
+
+
 end

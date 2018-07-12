@@ -11,7 +11,14 @@ class Artist < ActiveRecord::Base
   end
 
   def self.most_popular
-    Artist.maximum(num_of_fans)
+    max_fans = Artist.maximum(:num_of_fans)
+    artist = Artist.find_by(num_of_fans: max_fans)
+    artist.name
   end
 
+  def self.most_albums
+    max_albums = Artist.maximum(:num_of_albums)
+    artist = Artist.find_by(num_of_albums: max_albums)
+    artist.name
+  end
 end

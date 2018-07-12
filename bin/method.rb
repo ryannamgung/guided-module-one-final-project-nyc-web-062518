@@ -2,8 +2,15 @@ class Method
   # def self.prompt
   #   puts "Enter an artist's name"
   # end
+  def self.input(input)
+    inputs = input.split(" ").map do |name|
+      name.downcase.capitalize
+    end
+    inputs.join(" ")
+  end
+
   def self.gets_user_input
-    array_names = gets.chomp.split(" ").map do |name|
+    array_names = STDIN.gets.chomp.split(" ").map do |name|
       name.downcase.capitalize
     end
     array_names.join(" ")
