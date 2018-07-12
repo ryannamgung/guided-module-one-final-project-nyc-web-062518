@@ -48,6 +48,7 @@ class Playlist < ActiveRecord::Base
       end
     end
 
+
     artist_songs = Array.new artist_id_array.uniq.length
     artist_songs = artist_songs.map do |index|
       index = []

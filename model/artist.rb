@@ -21,4 +21,12 @@ class Artist < ActiveRecord::Base
     artist = Artist.find_by(num_of_albums: max_albums)
     artist.name
   end
+
+  def self.all_artists
+    Artist.all.map do |artist|
+      artist.name
+    end
+  end
+
+
 end
