@@ -46,14 +46,13 @@ class Playlist < ActiveRecord::Base
       end
     end
 
-    song_hash.map do |artist_id, song_id|
+    song_hash.update do |artist_id, song_id|
       Artist.all.each do |artist|
         if artist.id == artist_id
           artist_id = artist.name
         end
       end
       binding.pry
-
     #   Song.all.each do |song|
     #     if song.id == song_id
     #       song_id = song.name
