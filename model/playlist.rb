@@ -38,27 +38,74 @@ class Playlist < ActiveRecord::Base
 
   def self.show_playlist(name)
     song_hash = Hash.new
-    song_id = []
-    artist_id = []
+    #first is the artist
+    artist_id_array = []
+    song_id_array = []
     Playlist.all.each do |playlist|
       if playlist.name == name
-        song_hash[playlist.artist_id] = playlist.song_id
+        artist_id_array << playlist.artist_id
+        song_id_array << playlist.song_id
       end
     end
 
-    song_hash.update do |artist_id, song_id|
-      Artist.all.each do |artist|
-        if artist.id == artist_id
-          artist_id = artist.name
+
+    artist_songs = Array.new artist_id_array.uniq.length
+    artist_songs = artist_songs.map do |index|
+      index = []
+    end
+
+    artist_id_array.uniq.each_with_index do |value, index|
+      artist_songs[index] << value
+    end
+
+    playlist_hash = {}
+
+    while artist_id_array.length > 0 do
+      artist_info = []
+      song_info = []
+      artist_id_array.each do |id|
+        Artist.all.each do |artist|
+          if artist.id == id
+            artist_info << artist.id
+            artist_info << artist.name
+            # binding.pry
+            break
+          end
+        end
+        if artist_info.length > 0
+          artist_id_array.shift
+          break
         end
       end
-      binding.pry
-    #   Song.all.each do |song|
-    #     if song.id == song_id
-    #       song_id = song.name
-    #     end
-    #   end
-    # end
+
+
+      song_id_array.each do |id|
+        Song.all.each do |song|
+          if song.id == id
+            song_info << song.id
+            song_info << song.name
+            break
+          end
+        end
+        # binding.pry
+        if song_info.length > 0
+          song_id_array.shift
+          break
+        end
+      end
+
+      final_songs = []
+      artist_songs.each_with_index do |element, index|
+        if element.first == artist_info[0]
+          artist_songs[index] << song_info[1]
+          final_songs = artist_songs[index]
+        end
+      end
+
+      playlist_hash[artist_info[1]] = final_songs
+      # binding.pry
     end
+    playlist_hash
+    # binding.pry
   end
 end

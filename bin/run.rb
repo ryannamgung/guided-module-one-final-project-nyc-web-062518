@@ -1,5 +1,5 @@
  require_relative '../config/environment'
-
+#
 # def list_methods
 #   puts <<-STRING
 #   What would you like to do?
@@ -75,7 +75,7 @@
 # end
 #
 # list_methods
-
+#
 # puts "Enter an artist name"
 # artist = gets.chomp
 #
