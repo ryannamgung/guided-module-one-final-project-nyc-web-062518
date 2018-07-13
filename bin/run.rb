@@ -6,7 +6,7 @@ def list_methods
 ------------------------------------------------
 * Add new artist - 'add artist'
 * Populate playlist - 'populate playlist'
-* Show playlists - 'show playlists'
+* Show playlists - 'show playlist'
 * Find artist - 'find artist'
 * Find album - 'find album'
 * Find song - 'find song'
@@ -20,12 +20,7 @@ def list_methods
 end
 
 while true
-  puts "Enter help if you wish to view menu, otherwise press enter"
-  input = gets.chomp
-  if input == "help"
-    list_methods
-  end
-  puts "Enter a command"
+  puts "Enter help if you wish to view menu, otherwise enter a command"
   input = gets.chomp
   if input == 'add artist'
     puts "Enter an Artist name: "
@@ -59,7 +54,6 @@ while true
     name = gets.chomp
     name = Method.input(name)
     artist = Artist.find_by(name: name)
-    puts artist
   elsif input == 'find album'
     puts "Enter the album name: "
     name = gets.chomp
@@ -70,10 +64,10 @@ while true
     name = gets.chomp
     name = Method.input(name)
     song = Song.find_by(name: name)
-  elsif input == 'most popular artist'
-    puts Artist.most_popular
-  elsif input == 'most albums artist'
-    puts Artist.most_albums
+  elsif input == 'most popular'
+    Artist.most_popular
+  elsif input == 'most albums'
+    Artist.most_albums
   elsif input == 'all artist songs'
     puts "Enter an artist"
     input = gets.chomp
@@ -84,12 +78,19 @@ while true
       puts "Enter an artist"
       input = gets.chomp
      puts Album.all_albums(input)
+   elsif input == 'show playlist'
+     puts "Enter a playlist name"
+     input = gets.chomp
+     puts Playlist.show_playlist(input)
+   elsif input == "help"
+     list_methods
    elsif input == "exit"
      break
    else
      puts "Invalid command."
   end
-end
+
+  end
 
 
 #
