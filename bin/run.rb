@@ -1,5 +1,5 @@
  require_relative '../config/environment'
-#
+
 def list_methods
   puts <<-STRING
   What would you like to do?
@@ -91,11 +91,3 @@ while true
   end
 
   end
-
-
-#
-# puts "Enter an artist name"
-# artist = gets.chomp
-#
-# p Song.all_songs(artist)
-# p Playlist.show_playlist("elbins playlist")
